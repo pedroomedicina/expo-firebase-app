@@ -8,11 +8,14 @@ import * as firebase from 'firebase';
 
 export default class Start extends Component {
     static navigationOptions = {
-        headerTitle: 'Expo App'
+        headerTitle: 'Expoo App'
       };
 
     login () {
-
+        const navigateAction = NavigationActions.navigate({
+            routeName: "Login"
+        });
+        this.props.navigation.dispatch(navigateAction);
     }
 
     register () {

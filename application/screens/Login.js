@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {view} from 'react-native';
+import {View} from 'react-native';
 import BackgroundImage from "../components/BackgroundImage";
 import AppButton from "../components/AppButton";
 import t from 'tcomb-form-native';
@@ -10,7 +10,7 @@ import * as firebase from 'firebase';
 import Toast from 'react-native-simple-toast';
 
 export default class Login extends Component {
-    constructor () {
+    constructor (props) {
         super(props);
 
         this.user = t.struct({
@@ -35,7 +35,10 @@ export default class Login extends Component {
     }
 
     login(){
-
+        const validate = this.refs.form.getValue();
+        if (validate){
+            console.log("success");
+        }
     }
 
     render(){

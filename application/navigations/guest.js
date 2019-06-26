@@ -1,11 +1,15 @@
 import React from 'react';
 import {StackNavigator} from 'react-navigation';
 import StartScreen from '../screens/Start';
+import LoginScreen from '../screens/Login';
 
 export default StackNavigator(
     {
         Start: {
             screen: StartScreen
+        },
+        Login: {
+            screen: LoginScreen
         }
     },
     {
