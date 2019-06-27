@@ -2,6 +2,7 @@ import React from 'react';
 import RestaurantsScreen from '../screens/Restaurants/Restaurants';
 import AddRestaurantScreen from '../screens/Restaurants/AddRestaurant';
 import LogoutScreen from '../screens/Logout';
+import DetailRestaurantScreen from '../screens/Restaurants/DetailRestaurant';
 
 import { DrawerNavigator, StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -55,6 +56,14 @@ const restaurantsScreenStack = StackNavigator(
                 title: 'Agregar Restaurante',
                 headerRight: rightIcon(navigation, 'home'),
                 headerLeft: leftIcon(navigation, 'bars') 
+            })
+        },
+        DetailRestaurant: {
+            screen: DetailRestaurantScreen,
+            navigationOptions: ({ navigation }) => ({
+                title: 'Detalle del Restaurante',
+                headerRight: rightIcon(navigation, 'home'),
+                headerLeft: leftIcon(navigation, 'bars')
             })
         }
 
