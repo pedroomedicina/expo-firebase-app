@@ -23,7 +23,16 @@ export default class AddRestaurant extends Component {
     }
 
     save() {
-
+        const validate = this.refs.form.getValue();
+        if (validate){
+            let data = {};
+            const key = firebase.database().ref().child('restaurants').push().key;
+            data[`restaurants/${key}`] = this.state.restaurant;
+            firebase.database().ref().update(data).then(() => {
+                Toast.showWithGravity("Restaurante dado de alta", Toast.LONG, Toast.BOTTOM);
+                this.props.navigation.navigate('ListRestaurants');
+            });
+        }
     }
 
     onChange(restaurant) {

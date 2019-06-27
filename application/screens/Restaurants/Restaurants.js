@@ -17,12 +17,13 @@ export default class Restaurants extends Component {
             restaurant_logo: require('../../../assets/checklist-on-a-paper-with-a-pencil.png')
         };
 
-        this.refsRestaurants = firebase.database().ref().child("restaurants");
+        this.refRestaurants = firebase.database().ref().child("restaurants");
     }
 
     componentDidMount () {
-        let restaurants = [];
-        this.refsRestaurants.on('value', snapshot => {
+        
+        this.refRestaurants.on('value', snapshot => {
+            let restaurants = [];
             snapshot.forEach(row => {
                 restaurants.push({
                     id: row.key,
@@ -32,12 +33,12 @@ export default class Restaurants extends Component {
                     description: row.val().description
                 })
             })
+            
+            this.setState({
+                restaurants,
+                loaded: true
+            });
         })
-
-        this.setState({
-            restaurants,
-            loaded: true
-        });
     }
 
     addRestaurant() {
@@ -49,17 +50,17 @@ export default class Restaurants extends Component {
     }
 
     restaurantDetail() {
-
+        console.log(this.state.restaurants);
     }
 
-    renderRestaurant() {
+    renderRestaurant(restaurant) {
         return(
             <ListItem
                 containerStyle={styles.item}
                 titleStyle={styles.title}
                 roundAvatar
                 title={`${restaurant.name} (Capacidad: ${restaurant.capacity})`}
-                avatar={this.state.restaurant_logo}
+                leftAvatar={ {source: this.state.restaurant_logo} }
                 onPress={() => this.restaurantDetail(restaurant)}
                 rightIcon={{ name: 'arrow-right', type: 'font-awesome', style: styles.listIconStyle }}
             />
@@ -107,6 +108,6 @@ const styles = StyleSheet.create({
     },
     item: {
         padding: 0,
-        color: 'rgba(206, 206, 206, 0.6)'
+        backgroundColor: 'rgba(206, 206, 206, 0.6)'
     }
 });
