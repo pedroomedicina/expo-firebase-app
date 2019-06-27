@@ -4,7 +4,9 @@ import BackgroundImage from '../components/BackgroundImage';
 import AppButton from '../components/AppButton';
 import { NavigationActions } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
+import * as Facebook from 'expo-facebook';
 import * as firebase from 'firebase';
+import facebook from '../utils/facebook';
 
 export default class Start extends Component {
     static navigationOptions = {
@@ -19,11 +21,31 @@ export default class Start extends Component {
     }
 
     register () {
-
+        const navigateAction = NavigationActions.navigate({
+            routeName: "Register"
+        });
+        this.props.navigation.dispatch(navigateAction);
     }
 
     async facebook () {
-    
+        const {type, token} = await Facebook.logInWithReadPermissionsAsync(
+            facebook.config.application_id,
+            { permissions: facebook.config.permissions }
+        )
+
+        if(type === "success"){
+            const credentials = firebase.auth.FacebookAuthProvider.credential(token);
+            firebase.auth().signInWithCredential(credentials)
+                .catch (error => {
+                    Toast.showWithGravity("Error accediendo con Facebook", Toast.LONG, Toast.BOTTOM);
+                    console.log(error.message);
+                })
+        } else if (type === "cancel"){
+            Toast.showWithGravity('Inicio de sesion cancelado', Toast.LONG, Toast.BOTTOM)
+        } else {
+            Toast.showWithGravity('Error desconocido', Toast.LONG, Toast.BOTTOM)
+        }
+
     }
 
     render(){

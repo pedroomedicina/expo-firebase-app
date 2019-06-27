@@ -37,7 +37,19 @@ export default class Login extends Component {
     login(){
         const validate = this.refs.form.getValue();
         if (validate){
-            console.log("success");
+            firebase.auth().signInWithEmailAndPassword(validate.email, validate.password)
+                .then(() =>  {
+                    Toast.showWithGravity("Bienvenido", Toast.LONG, Toast.BOTTOM);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    if (errorCode === 'auth/wrong-password'){
+                        Toast.showWithGravity('Password incorrecto', Toast.LONG, Toast.BOTTOM);
+                    } else {
+                        Toast.showWithGravity(errorMessage, Toast.LONG, Toast.BOTTOM);
+                    }
+                });
         }
     }
 
