@@ -1,34 +1,36 @@
 import React from 'react';
-import {createStackNavigator} from 'react-navigation';
-import StartScreen from '../screens/Start';
-import LoginScreen from '../screens/Login';
-import RegisterScreen from '../screens/Register';
+import { createStackNavigator } from "react-navigation";
+import StartScreen from "../screens/Start";
+import LoginScreen from "../screens/Login";
+import RegisterScreen from "../screens/Register";
 
 export default createStackNavigator(
-    {
-        Start: {
-            screen: StartScreen
-        },
-        Login: {
-            screen: LoginScreen
-        },
-        Register: {
-            screen: RegisterScreen
-        }
-    },
-    {
-        initialRouteName: 'Start',
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: '#f4511e'
-            },
-            headerTitleStyle: {
-                textAlign: 'center',
-                alignSelf: 'center',
-                fontSize: 20,
-                color: '#fff',
-                fontWeight: 'bold'
-            }
-        }
-    }
-)
+	{
+		Start: {
+			screen: StartScreen
+		},
+		Login: {
+			screen: LoginScreen
+		},
+		Register: {
+			screen: RegisterScreen
+		},
+	},
+	{
+		initialRouteName: 'Start',
+    gesturesEnabled: true,
+		
+		navigationOptions: {
+			headerStyle: {
+				backgroundColor: '#f4511e'
+			},
+			headerTitleStyle: {
+				textAlign: 'center',
+				alignSelf: 'center',
+				fontSize: 20,
+				color: '#fff',
+				fontWeight: 'bold'
+			}
+		}
+	}
+);
