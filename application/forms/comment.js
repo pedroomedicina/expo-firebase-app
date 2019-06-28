@@ -8,7 +8,7 @@ export const Comment = t.struct({
     comment: t.maybe(t.String)
 });
 
-export const Options = {
+export const options = {
     fields: {
         rating: {
             label: 'Puntuacion',

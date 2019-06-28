@@ -7,31 +7,29 @@ import { options, Restaurant } from '../../forms/restaurant';
 import t from 'tcomb-form-native';
 import {Card} from 'react-native-elements';
 const Form = t.form.Form;
-import Toast from 'react-native-simple-toast';
+import {NavigationActions} from 'react-navigation';
 
-export default class AddRestaurant extends Component {
-    constructor(){
-        super();
+export default class EditRestaurant extends Component {
+    constructor(props){
+        super(props);
+        const {params} = this.props.navigation.state;
         this.state = {
-            restaurant: {
-                name: '',
-                address: '',
-                capacity: 0,
-                description: ''
-            }
+            restaurant: params.restaurant
         };
     }
 
-    save() {
+    update() {
         const validate = this.refs.form.getValue();
-        if (validate){
-            let data = {};
-            const key = firebase.database().ref().child('restaurants').push().key;
-            data[`restaurants/${key}`] = this.state.restaurant;
-            firebase.database().ref().update(data).then(() => {
-                Toast.showWithGravity("Restaurante dado de alta", Toast.LONG, Toast.BOTTOM);
-                this.props.navigation.navigate('ListRestaurants');
-            });
+        if (validate) {
+            let data = Object.assign({}, validate);
+            const ref = firebase.database().ref().child(`restaurants/${this.state.restaurant.id}`);
+            ref.update(data).then(() => {
+                const navigateAction = NavigationActions.navigate({
+                    routeName: 'DetailRestaurant',
+                    params: {restaurant: this.state.restaurant}
+                });
+                this.props.navigation.dispatch(navigateAction);
+            })
         }
     }
 
@@ -39,13 +37,13 @@ export default class AddRestaurant extends Component {
         this.setState({restaurant});
     }
 
-    render() {
+    render(){
         const {restaurant} = this.state;
 
-        return (
+        return(
             <BackgroundImage source={require('../../../assets/images/15136.jpg')}>
                 <View style={styles.container}>
-                    <Card title='Formulario de restaurantes'>
+                    <Card title="Editar Restaurante">
                         <View>
                             <Form
                                 ref="form"
@@ -54,15 +52,15 @@ export default class AddRestaurant extends Component {
                                 value={restaurant}
                                 onChange={(v) => this.onChange(v)}
                             />
+                            <AppButton
+                                bgColor="rgba(255, 38, 74, 0.9)"
+                                title="Actualizar"
+                                action={this.update.bind(this)}
+                                iconName="pencil"
+                                iconSize={30}
+                                iconColor='#fff'
+                            />
                         </View>
-                        <AppButton
-                            bgColor="rgba(255,38, 74, 0.6)"
-                            title="Agregar un restaurante"
-                            action={this.save.bind(this)}
-                            iconName="plus"
-                            iconSize={30}
-                            iconColor='#fff'
-                        />
                     </Card>
                 </View>
             </BackgroundImage>
@@ -71,8 +69,8 @@ export default class AddRestaurant extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'rgba(231, 228,  224,0.8)',
+    container:{
+        backgroundColor: 'rgba(231, 228, 224, 0.8)',
         padding: 10
     }
-})
+});
